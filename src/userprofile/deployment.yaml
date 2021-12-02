@@ -18,3 +18,24 @@ spec:
         ports:
         - containerPort: 80
           name: userprofile
+        env:
+        - name: SQL_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: sqlserver
+              key: password
+        - name: SQL_SERVER
+          valueFrom:
+            configMapKeyRef:
+              name: sqlserver-configmap
+              key: sql_server
+        - name: SQL_USER
+          valueFrom:
+            configMapKeyRef:
+              name: sqlserver-configmap
+              key: sql_user
+        - name: SQL_DBNAME
+          valueFrom:
+            configMapKeyRef:
+              name: sqlserver-configmap
+              key: sql_dbname
