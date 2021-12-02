@@ -1,0 +1,9 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: sqlserver-configmap
+data:
+  # property-like keys; each key maps to a simple value
+  sql_server: "sqlserverdoy6068.database.windows.net"
+  sql_dbname: "mydrivingDB"
+  sql_user: "sqladmindOy6068"
