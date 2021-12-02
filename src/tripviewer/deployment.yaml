@@ -2,8 +2,9 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: tripviewer
+  namespace: web
 spec:
-  replicas: 1
+  replicas: 6
   selector:
     matchLabels:
       app: tripviewer
@@ -18,3 +19,8 @@ spec:
         ports:
         - containerPort: 80
           name: tripviewer
+        env:
+        - name: TRIPS_API_ENDPOINT
+          value: http://trips.api.svc.cluster.local
+        - name: USERPROFILE_API_ENDPOINT
+          value: http://userprofile.api.svc.cluster.local
