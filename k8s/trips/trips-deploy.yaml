@@ -1,0 +1,43 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: trips
+  labels:
+    app: trips
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: trips
+  template:
+    metadata:
+      labels:
+        app: trips
+    spec:
+      containers:
+      - name: trips
+        env:
+          - name: SQL_SERVER
+            valueFrom:
+              configMapKeyRef:
+                name: sqlserver-configmap
+                key: sql_server
+          - name: SQL_DBNAME
+            valueFrom:
+              configMapKeyRef:
+                name: sqlserver-configmap
+                key: sql_dbname
+          - name: SQL_USER
+            valueFrom:
+              configMapKeyRef:
+                name: sqlserver-configmap
+                key: sql_user
+          - name: SQL_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: sqlserver
+                key: password
+        image: registrydoy6068.azurecr.io/tripinsights/trips:1.0
+        ports:
+        - containerPort: 80
