@@ -16,6 +16,13 @@ spec:
       labels:
         app: trips
     spec:
+      volumes:
+      - name: tripinsights-secrets
+        csi:
+          driver: secrets-store.csi.k8s.io
+          readOnly: true
+          volumeAttributes:
+            secretProviderClass: tripinsights-secrets
       containers:
       - name: trips
         env:
@@ -34,11 +41,15 @@ spec:
               configMapKeyRef:
                 name: sqlserver-configmap
                 key: sql_user
-          - name: SQL_PASSWORD
-            valueFrom:
-              secretKeyRef:
-                name: sqlserver
-                key: password
+          # - name: SQL_PASSWORD
+          #   valueFrom:
+          #     secretKeyRef:
+          #       name: sqlserver
+          #       key: password
         image: registrydoy6068.azurecr.io/tripinsights/trips:1.0
         ports:
         - containerPort: 80
+        volumeMounts:
+        - mountPath: /secrets
+          name: tripinsights-secrets
+          readOnly: true

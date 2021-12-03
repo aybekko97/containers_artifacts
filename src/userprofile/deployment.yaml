@@ -13,6 +13,13 @@ spec:
       labels:
         app: userprofile
     spec:
+      volumes:
+      - name: tripinsights-secrets-2
+        csi:
+          driver: secrets-store.csi.k8s.io
+          readOnly: true
+          volumeAttributes:
+            secretProviderClass: tripinsights-secrets-2
       containers:
       - name: userprofile
         image: registrydoy6068.azurecr.io/tripinsights/userprofile:1.0
@@ -23,8 +30,8 @@ spec:
         - name: SQL_PASSWORD
           valueFrom:
             secretKeyRef:
-              name: sqlserver
-              key: password
+              name: sqlserver-for-userprofile
+              key: SQL_PASSWORD_KEY
         - name: SQL_SERVER
           valueFrom:
             configMapKeyRef:
@@ -40,3 +47,7 @@ spec:
             configMapKeyRef:
               name: sqlserver-configmap
               key: sql_dbname
+        volumeMounts:
+        - name: tripinsights-secrets-2
+          mountPath: /secrets
+          readOnly: true

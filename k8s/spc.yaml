@@ -1,0 +1,55 @@
+apiVersion: secrets-store.csi.x-k8s.io/v1
+kind: SecretProviderClass
+metadata:
+  name: tripinsights-secrets
+  namespace: api
+spec:
+  parameters:
+    cloudName: ""
+    keyvaultName: tripsights-vault
+    objects: |
+      array:
+        - |
+          objectName: tripinsights-mydrivingDB-password
+          objectAlias: SQL_PASSWORD
+          objectType: secret              # object types: secret, key, or cert
+          objectVersion: ""               # [OPTIONAL] object versions, default to latest if empty
+    tenantId: b116dd6c-a1ee-45f0-94a1-f6e36f5e88a1
+    usePodIdentity: "false"
+    useVMManagedIdentity: "true"
+    userAssignedIdentityID: 9b800dee-fb68-4b47-b4a2-088422b3f036
+  provider: azure
+  # secretObjects:
+  # - data:
+  #   - key: SQL_PASSWORD
+  #     objectName: password
+  #   secretName: sqlserver-1
+  #   type: Opaque
+---
+apiVersion: secrets-store.csi.x-k8s.io/v1
+kind: SecretProviderClass
+metadata:
+  name: tripinsights-secrets-2
+  namespace: api
+spec:
+  parameters:
+    cloudName: ""
+    keyvaultName: tripsights-vault
+    objects: |
+      array:
+        - |
+          objectName: tripinsights-mydrivingDB-password
+          objectAlias: SQL_PASSWORD_2
+          objectType: secret              # object types: secret, key, or cert
+          objectVersion: ""               # [OPTIONAL] object versions, default to latest if empty
+    tenantId: b116dd6c-a1ee-45f0-94a1-f6e36f5e88a1
+    usePodIdentity: "false"
+    useVMManagedIdentity: "true"
+    userAssignedIdentityID: 9b800dee-fb68-4b47-b4a2-088422b3f036
+  provider: azure
+  secretObjects:
+  - data:
+    - key: SQL_PASSWORD_KEY
+      objectName: SQL_PASSWORD_2
+    secretName: sqlserver-for-userprofile
+    type: Opaque
